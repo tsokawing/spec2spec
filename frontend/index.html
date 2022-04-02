@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>spec2spec demo</title>
+    <meta name="description" content="A demo site for spec2spec model" />
+    <meta name="keywords" content="pix2pix, spec2spec, GAN, Machine Learning" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- <link rel="icon" href="icon.png" />
+    <link rel="apple-touch-icon" href="icon.png" /> -->
+
+    <link rel="stylesheet" href="main.css" />
+  </head>
+
+  <body>
+    <h1>spec2spec</h1>
+
+    <section class="demo">
+      <div class="audio-data">
+        <h3>Input</h3>
+        <img src="images//input.png" alt="Input image" width="500" />
+        <div class="audio">
+          <audio
+            preload="metadata"
+            style="width: 300px"
+            src="audio/input.wav"
+            controls="controls"
+          ></audio>
+          <button onclick="document.getElementById('upload').click()">Upload</button>
+          <input type="file" id="upload" accept="audio/*" value="audio/input.wav" style="display: none;"/>
+          
+        </div>
+      </div>
+        
+      </div>
+      <div class="audio-data">
+        <h3>Prediction</h3>
+        <img src="images//predict.png" alt="Predicted image" width="500" />
+        <div class="audio">
+          <audio
+            preload="metadata"
+            style="width: 300px"
+            src="audio/predict.wav"
+            controls="controls"
+          ></audio>
+          <button type="button">Save</button>
+        </div>
+      </section>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>

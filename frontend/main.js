@@ -18,7 +18,8 @@ input.addEventListener("change", (e) => {
 });
 
 function sendPredictRequest(file) {
-  console.log("processing");
+  startLoadingAnimation();
+
   const predictURL = "http://127.0.0.1:5000/predict";
   const formData = new FormData();
   formData.append("audio_data", file);
@@ -34,6 +35,21 @@ function sendPredictRequest(file) {
     .then((stream) => new Response(stream))
     .then((response) => response.blob())
     .then((blob) => URL.createObjectURL(blob))
-    .then((url) => console.log((predAudio.src = url)))
+    .then((url) => {
+      console.log((predAudio.src = url));
+      stopLoadingAnimation();
+    })
     .catch((err) => console.error(err));
+}
+
+function startLoadingAnimation() {
+  document.getElementsByClassName("loader")[0].style.display = "block";
+  document.getElementsByClassName("fa-arrow-right-long")[0].style.display =
+    "none";
+}
+
+function stopLoadingAnimation() {
+  document.getElementsByClassName("loader")[0].style.display = "none";
+  document.getElementsByClassName("fa-arrow-right-long")[0].style.display =
+    "block";
 }

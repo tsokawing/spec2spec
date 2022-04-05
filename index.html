@@ -59,7 +59,7 @@
       <section class="demo">
         <div class="audio-data">
           <h3>Input Mel-frequency Spectrogram</h3>
-          <img src="images//input.png" alt="Input image" />
+          <img id="input-spec" src="images//input.png" alt="Input image" />
           <div class="audio">
             <audio
               preload="metadata"
@@ -87,7 +87,11 @@
 
         <div class="audio-data">
           <h3>Predicted Mel-frequency Spectrogram</h3>
-          <img src="images//predict.png" alt="Predicted image" />
+          <img
+            id="output-spec"
+            src="images//predict.png"
+            alt="Predicted image"
+          />
           <div class="audio">
             <audio
               preload="metadata"

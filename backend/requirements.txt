@@ -3,3 +3,4 @@ librosa~=0.9.1
 numpy~=1.21.5
 tensorflow~=2.8.0
 SoundFile~=0.10.3.post1
+matplotlib~=3.5.1

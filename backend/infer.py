@@ -1,7 +1,9 @@
 import librosa
+import librosa.display
 import numpy as np
 import tensorflow as tf
 import soundfile as sf
+import matplotlib.pyplot as plt
 
 SPEC2SPEC_MODEL_PATH = 'model'
 
@@ -67,6 +69,14 @@ def to_melspectrogram(audio):
     return spec
 
 
+def save_melspectrogram(spec, path):
+    fig, ax = plt.subplots(frameon=False)
+    ax.set_axis_off()
+    audio_db = librosa.power_to_db(spec, ref=np.max)
+    librosa.display.specshow(audio_db, sr=SAMPLING_RATE, fmax=8000, ax=ax, cmap='magma')
+    fig.savefig(path, bbox_inches='tight', pad_inches=0)
+
+
 def recover_audio(melspectrogram):
     stft = librosa.feature.inverse.mel_to_stft(melspectrogram, sr=SAMPLING_RATE)
     audio = librosa.griffinlim(stft)
@@ -75,8 +85,9 @@ def recover_audio(melspectrogram):
 
 def test():
     audio = load_audio('uploads/test.wav')
-    pred_spec, pred_audio = Spec2spec().infer(audio)
-    save_audio('output/test.wav', pred_audio)
+    # pred_spec, pred_audio = Spec2spec().infer(audio)
+    # save_audio('output/test.wav', pred_audio)
+    save_melspectrogram(to_melspectrogram(audio), 'output/test.png')
 
 
 if __name__ == '__main__':

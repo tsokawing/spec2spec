@@ -1,9 +1,9 @@
 # please put your ignorance here
 
-./backend/uploads/*.wav
-./backend/uploads/*.mp3
-./backend/uploads/*.png
+backend/uploads/*.wav
+backend/uploads/*.mp3
+backend/uploads/*.png
 
-./backend/output/*.wav
-./backend/output/*.mp3
-./backend/output/*.png
+backend/output/*.wav
+backend/output/*.mp3
+backend/output/*.png

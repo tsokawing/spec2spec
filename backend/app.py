@@ -50,9 +50,11 @@ def remove_old_files():
                 continue
     pass
 
+
 @app.route('/predict', methods=['POST'])
 def predict():
     # Check if the post request has the file part.
+    remove_old_files()
     if 'audio_data' not in request.files:
         return 'No files uploaded'
 
@@ -63,9 +65,15 @@ def predict():
         return 'No filename'
 
     if file and is_allowed(file.filename):
+        proj_root_dir = os.path.dirname(__file__)
+        now_time = datetime.datetime.now()
+        # hopefully this is sufficient
+        time_string_comp = f'{now_time.year}_{str(now_time.month).zfill(2)}_{str(now_time.day).zfill(2)}' \
+                           f'_{str(now_time.hour).zfill(2)}_{str(now_time.minute).zfill(2)}_{str(now_time.second).zfill(2)}'
+
         # Write file to the disk then read to predict.
         # May be too slow, better to read file objects directly without disk I/O.
-        in_path = os.path.join(app.config['UPLOAD_FOLDER'], 'upload.wav')
+        in_path = os.path.join(proj_root_dir, app.config['UPLOAD_FOLDER'], f'upload_{time_string_comp}.wav')
         file.save(in_path)
 
         # Predict.
@@ -74,28 +82,52 @@ def predict():
 
         # Save spectrogram of both the input and output audio.
         in_spec = to_melspectrogram(audio)
-        in_spec_path = os.path.join(app.config['OUTPUT_FOLDER'], 'input.png')
+        in_spec_path = os.path.join(app.config['OUTPUT_FOLDER'], f'input_{time_string_comp}.png')
         save_melspectrogram(in_spec, in_spec_path)
-        out_spec_path = os.path.join(app.config['OUTPUT_FOLDER'], 'output.png')
+        out_spec_path = os.path.join(app.config['OUTPUT_FOLDER'], f'output_{time_string_comp}.png')
         save_melspectrogram(pred_spec, out_spec_path)
 
         # Save output audio.
-        out_path = os.path.join(app.config['OUTPUT_FOLDER'], 'output.wav')
+        out_path = os.path.join(app.config['OUTPUT_FOLDER'], f'output_{time_string_comp}.wav')
         save_audio(out_path, pred_audio)
-        return send_file(out_path)
+        return time_string_comp
 
     return 'No file or file not supported'
 
 
+@app.route('/outwav', methods=['GET'])
+def get_output_audio():
+    remove_old_files()
+    proj_root_dir = os.path.dirname(__file__)
+    spec_path = os.path.join(proj_root_dir, app.config['OUTPUT_FOLDER'], 'output.wav')
+    if 'time_code' in request.args:
+        # load the specific file
+        file_name = f'output_{request.args.get("time_code")}.wav'
+        spec_path = os.path.join(proj_root_dir, app.config['OUTPUT_FOLDER'], file_name)
+    return send_file(spec_path)
+
+
 @app.route('/inspec', methods=['GET'])
 def get_input_spectrogram():
-    spec_path = os.path.join(app.config['OUTPUT_FOLDER'], 'input.png')
+    remove_old_files()
+    proj_root_dir = os.path.dirname(__file__)
+    spec_path = os.path.join(proj_root_dir, app.config['OUTPUT_FOLDER'], 'input.png')
+    if 'time_code' in request.args:
+        # load the specific file
+        file_name = f'input_{request.args.get("time_code")}.png'
+        spec_path = os.path.join(proj_root_dir, app.config['OUTPUT_FOLDER'], file_name)
     return send_file(spec_path)
 
 
 @app.route('/outspec', methods=['GET'])
 def get_prediction_spectrogram():
-    spec_path = os.path.join(app.config['OUTPUT_FOLDER'], 'output.png')
+    remove_old_files()
+    proj_root_dir = os.path.dirname(__file__)
+    spec_path = os.path.join(proj_root_dir, app.config['OUTPUT_FOLDER'], 'output.png')
+    if 'time_code' in request.args:
+        # load the specific file
+        file_name = f'output_{request.args.get("time_code")}.png'
+        spec_path = os.path.join(proj_root_dir, app.config['OUTPUT_FOLDER'], file_name)
     return send_file(spec_path)
 
 

@@ -32,24 +32,43 @@ function sendPredictRequest(file) {
     body: formData,
   })
     .then((res) => {
-      // The POST response will be the prediction audio file.
+      // The POST response will be the magic timecode to get subsequent stuff
       return res.body;
+    })
+    .then((stream) => new Response(stream))
+    .then((response) => response.text())
+    .then((time_code) => {
+      const regexTimeCode = new RegExp("[0-9]{4}_[0-9]{2}_[0-9]{2}");
+      if (regexTimeCode.test(time_code)) {
+        // regex match it, it should at least look like a time code
+        // whether it actually exists, we can leave to backend
+        getSpectrograms(time_code);
+        getPredictionResult(time_code);
+      }
+    })
+    .catch((err) => console.error(err));
+}
+
+function getPredictionResult(time_code) {
+  const obtainURL = "http://127.0.0.1:5000/outwav";
+  fetch(obtainURL + "?time_code=" + time_code)
+    .then((res) => {
+      // The GET response will be the prediction wav
+      return res.body
     })
     .then((stream) => new Response(stream))
     .then((response) => response.blob())
     .then((blob) => URL.createObjectURL(blob))
     .then((url) => {
       predAudio.src = url;
-      // Also download spectrogram images from server after prediction.
-      getSpectrograms();
     })
     .catch((err) => console.error(err));
 }
 
-function getSpectrograms() {
+function getSpectrograms(time_code) {
   Promise.all([
-    fetch("http://127.0.0.1:5000/inspec"),
-    fetch("http://127.0.0.1:5000/outspec"),
+    fetch("http://127.0.0.1:5000/inspec?time_code=" + time_code),
+    fetch("http://127.0.0.1:5000/outspec?time_code=" + time_code),
   ])
     .then((responses) =>
       Promise.all(responses.map((response) => response.body))

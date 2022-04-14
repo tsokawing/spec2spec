@@ -82,13 +82,13 @@ def predict():
 
         # Save spectrogram of both the input and output audio.
         in_spec = to_melspectrogram(audio)
-        in_spec_path = os.path.join(app.config['OUTPUT_FOLDER'], f'input_{time_string_comp}.png')
+        in_spec_path = os.path.join(proj_root_dir, app.config['OUTPUT_FOLDER'], f'input_{time_string_comp}.png')
         save_melspectrogram(in_spec, in_spec_path)
-        out_spec_path = os.path.join(app.config['OUTPUT_FOLDER'], f'output_{time_string_comp}.png')
+        out_spec_path = os.path.join(proj_root_dir, app.config['OUTPUT_FOLDER'], f'output_{time_string_comp}.png')
         save_melspectrogram(pred_spec, out_spec_path)
 
         # Save output audio.
-        out_path = os.path.join(app.config['OUTPUT_FOLDER'], f'output_{time_string_comp}.wav')
+        out_path = os.path.join(proj_root_dir, app.config['OUTPUT_FOLDER'], f'output_{time_string_comp}.wav')
         save_audio(out_path, pred_audio)
         return time_string_comp
 

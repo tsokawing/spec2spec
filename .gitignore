@@ -6,3 +6,5 @@ backend/uploads/upload_*.mp3
 backend/output/input_*.png
 backend/output/output_*.png
 backend/output/output_*.wav
+
+training/*

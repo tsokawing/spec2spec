@@ -4,6 +4,7 @@ import numpy as np
 import tensorflow as tf
 import soundfile as sf
 import matplotlib.pyplot as plt
+import os
 
 SPEC2SPEC_MODEL_PATH = 'model'
 
@@ -15,7 +16,8 @@ DURATION = 5.94
 
 class Spec2spec:
     def __init__(self):
-        self.saved_path = SPEC2SPEC_MODEL_PATH
+        proj_root_dir = os.path.dirname(__file__)
+        self.saved_path = os.path.join(proj_root_dir, SPEC2SPEC_MODEL_PATH)
         self.model = tf.saved_model.load(self.saved_path)
 
     def infer(self, audio=None):

@@ -51,6 +51,12 @@ def remove_old_files():
     pass
 
 
+@app.route('/', methods=['GET'])
+def basic_reply():
+    # to show that it works without loading any fancy
+    return 'OK'
+
+
 @app.route('/predict', methods=['POST'])
 def predict():
     # Check if the post request has the file part.

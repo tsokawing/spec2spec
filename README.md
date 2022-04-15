@@ -8,3 +8,8 @@ This repository contains all the files related to the spec2spec project, includi
 Currently trying out part 1 of this:
 
 https://jtway.co/deploying-subdirectory-projects-to-heroku-f31ed65f3f2
+
+## windows backend venv
+may need this
+
+`Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process`

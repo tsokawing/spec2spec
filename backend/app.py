@@ -1,7 +1,10 @@
 import os
+import shutil
+
 from flask import Flask, request, send_file
 from infer import Spec2spec, load_audio, save_audio, to_melspectrogram, save_melspectrogram
 import datetime
+import gdown
 
 UPLOAD_FOLDER = 'uploads'
 OUTPUT_FOLDER = 'output'
@@ -10,6 +13,32 @@ ALLOWED_EXTENSIONS = {'wav', 'mp3'}
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
+
+
+def init():
+    remake_models_folder()
+    # init the stuff: download from google drive
+    download_from_gdrive('1fIwwUHbalNsY4pXwiZbBzN7frrU5VfEC', 'model/variables/variables.data-00000-of-00001')
+    download_from_gdrive('1WI1eyYKCjk1duE3XFOai1uOVls-VNGxL', 'model/variables/variables.index')
+    download_from_gdrive('1eASWc81Xpf_S_wjc3qsCIDH44keg9bAr', 'model/saved_model.pb')
+
+
+def remake_models_folder():
+    proj_root_dir = os.path.dirname(__file__)
+    for path in [f'{proj_root_dir}/model', f'{proj_root_dir}/model/variables']:
+        if os.path.exists(path):
+            shutil.rmtree(path)
+        os.makedirs(path, exist_ok=True)
+
+
+def download_from_gdrive(gdrive_id: str, output: str):
+    proj_root_dir = os.path.dirname(__file__)
+    url_path = f'https://drive.google.com/uc?id={gdrive_id}'
+    gdown.download(url_path, proj_root_dir + '/' + output)
+    pass
+
+
+init()
 spec2spec = Spec2spec()
 
 # files are allowed max 15 minutes of existence in our server

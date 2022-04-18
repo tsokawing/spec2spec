@@ -12,8 +12,3 @@ More readme may be found in each subfolder containing more explanation of each c
 Currently trying out part 1 of this:
 
 https://jtway.co/deploying-subdirectory-projects-to-heroku-f31ed65f3f2
-
-## windows backend venv
-may need this
-
-`Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process`

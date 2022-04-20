@@ -7,8 +7,3 @@ This repository contains all the files related to the spec2spec project, includi
 Specifically, `/frontend` contains files for the frontend web interface, while `/backend` contains files for the backend processing.
 
 More readme may be found in each subfolder containing more explanation of each corresponding components.
-
-## asdf
-Currently trying out part 1 of this:
-
-https://jtway.co/deploying-subdirectory-projects-to-heroku-f31ed65f3f2

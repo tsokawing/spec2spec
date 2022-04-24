@@ -1,3 +1,6 @@
+const SERVER_URL =
+  "http://ec2-18-191-140-64.us-east-2.compute.amazonaws.com:5000/";
+
 const inputAudio = document.getElementsByTagName("audio")[0];
 const predAudio = document.getElementsByTagName("audio")[1];
 
@@ -23,7 +26,7 @@ input.addEventListener("change", (e) => {
 function sendPredictRequest(file) {
   startLoadingAnimation();
 
-  const predictURL = "http://127.0.0.1:5000/predict";
+  const predictURL = SERVER_URL + "predict";
   const formData = new FormData();
   formData.append("audio_data", file);
 
@@ -50,11 +53,11 @@ function sendPredictRequest(file) {
 }
 
 function getPredictionResult(time_code) {
-  const obtainURL = "http://127.0.0.1:5000/outwav";
+  const obtainURL = SERVER_URL + "outwav";
   fetch(obtainURL + "?time_code=" + time_code)
     .then((res) => {
       // The GET response will be the prediction wav
-      return res.body
+      return res.body;
     })
     .then((stream) => new Response(stream))
     .then((response) => response.blob())
@@ -67,8 +70,8 @@ function getPredictionResult(time_code) {
 
 function getSpectrograms(time_code) {
   Promise.all([
-    fetch("http://127.0.0.1:5000/inspec?time_code=" + time_code),
-    fetch("http://127.0.0.1:5000/outspec?time_code=" + time_code),
+    fetch(SERVER_URL + "inspec?time_code=" + time_code),
+    fetch(SERVER_URL + "/outspec?time_code=" + time_code),
   ])
     .then((responses) =>
       Promise.all(responses.map((response) => response.body))

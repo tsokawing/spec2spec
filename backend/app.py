@@ -77,7 +77,6 @@ def remove_old_files():
             except Exception:
                 # does not match
                 continue
-    pass
 
 
 @app.route('/', methods=['GET'])

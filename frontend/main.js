@@ -71,7 +71,7 @@ function getPredictionResult(time_code) {
 function getSpectrograms(time_code) {
   Promise.all([
     fetch(SERVER_URL + "inspec?time_code=" + time_code),
-    fetch(SERVER_URL + "/outspec?time_code=" + time_code),
+    fetch(SERVER_URL + "outspec?time_code=" + time_code),
   ])
     .then((responses) =>
       Promise.all(responses.map((response) => response.body))

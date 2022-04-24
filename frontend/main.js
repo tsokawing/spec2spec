@@ -61,6 +61,7 @@ function getPredictionResult(time_code) {
     })
     .then((stream) => new Response(stream))
     .then((response) => response.blob())
+    .then((blob) => blob.slice(0, blob.size, "audio/wav"))
     .then((blob) => URL.createObjectURL(blob))
     .then((url) => {
       predAudio.src = url;
@@ -77,14 +78,18 @@ function getSpectrograms(time_code) {
       Promise.all(responses.map((response) => response.body))
     )
     .then((streams) => {
-      new Response(streams[0]).blob().then((blob) => {
-        const inputSpecUrl = URL.createObjectURL(blob);
-        inputSpec.src = inputSpecUrl;
-      });
-      new Response(streams[1]).blob().then((blob) => {
-        const outputSpecUrl = URL.createObjectURL(blob);
-        outputSpec.src = outputSpecUrl;
-      });
+      new Response(streams[0]).blob()
+        .then((blob0) => blob0.slice(0, blob0.size, "image/png"))
+        .then((blob0) => {
+            const inputSpecUrl = URL.createObjectURL(blob0);
+            inputSpec.src = inputSpecUrl;
+          });
+      new Response(streams[1]).blob()
+        .then((blob1) => blob1.slice(0, blob1.size, "image/png"))
+        .then((blob1) => {
+            const outputSpecUrl = URL.createObjectURL(blob1);
+            outputSpec.src = outputSpecUrl;
+          });
       stopLoadingAnimation();
     })
     .catch((err) => console.log(err));

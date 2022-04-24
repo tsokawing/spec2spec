@@ -4,3 +4,4 @@ numpy~=1.21.5
 tensorflow-cpu~=2.8.0
 SoundFile~=0.10.3.post1
 matplotlib~=3.5.1
+gdown~=4.4.0

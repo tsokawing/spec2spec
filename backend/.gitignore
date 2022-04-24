@@ -1,2 +1,7 @@
 .idea/*
 __pycache__/*
+
+# these are to be downloaded from the external network because of reasons written in the readme
+/model/saved_model.pb
+/model/variables/variables.index
+/model/variables/variables.data-00000-of-00001

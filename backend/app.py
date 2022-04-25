@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 
 from flask import Flask, request, send_file
 from infer import Spec2spec, load_audio, save_audio, to_melspectrogram, save_melspectrogram
@@ -14,8 +15,15 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
 
+skip_download = False
+
+spec2spec = None
+
 
 def init():
+    if skip_download:
+        print("Skipping the download of models.")
+        return
     remake_models_folder()
     # init the stuff: download from google drive
     download_from_gdrive('1fIwwUHbalNsY4pXwiZbBzN7frrU5VfEC', 'model/variables/variables.data-00000-of-00001')
@@ -36,13 +44,6 @@ def download_from_gdrive(gdrive_id: str, output: str):
     url_path = f'https://drive.google.com/uc?id={gdrive_id}'
     gdown.download(url_path, proj_root_dir + '/' + output)
     pass
-
-
-init()
-spec2spec = Spec2spec()
-
-# files are allowed max 15 minutes of existence in our server
-app.config['FILE_TIMEOUT_SECONDS'] = 15 * 60
 
 
 def is_allowed(filename):
@@ -166,4 +167,16 @@ def get_prediction_spectrogram():
 
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        # may have args
+        if sys.argv[1] == '--skip-download':
+            # docker img already contains the model file
+            skip_download = True
+
+    init()
+    spec2spec = Spec2spec()
+
+    # files are allowed max 15 minutes of existence in our server
+    app.config['FILE_TIMEOUT_SECONDS'] = 15 * 60
+
     app.run()

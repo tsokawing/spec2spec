@@ -48,7 +48,7 @@ Then your backend is ready to listen to requests from the frontend.
 
 # Deployment via Docker
 
-We have also deployed the backend via a Docker image.
+We have also deployed the backend via a Docker image. Subsequently, we deployed the Docker image on an AWS EC2 instance.
 
 Note the following:
 

@@ -48,4 +48,10 @@ Then your backend is ready to listen to requests from the frontend.
 
 # Deployment via Docker
 
-[WIP]
+We have also deployed the backend via a Docker image.
+
+Note the following:
+
+1. You may need to install librosa in your Docker image first
+2. The 3 model files need not be downloaded by the backend when using Docker; download the 3 model files first, add a `--skip-download` option to `python app.py`, and pack everything into a Docker image
+3. Running the backend Docker image requires at least 4GB of memory for running the model
